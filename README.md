@@ -14,6 +14,9 @@ git add <filename>
 
 git commit -m "Commit message"
 
+**To pull files**
+
+git pull whatever.txt master
 
 **branching**
 
