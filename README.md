@@ -10,9 +10,13 @@ git remote add origin https://github.com/Noxium/UPE17.git/
 
 git add <filename>
 
-**To push to repo**
+**To commit (staging)**
 
 git commit -m "Commit message"
+
+**To push (add to repo)**
+
+git push origin master
 
 **To pull files**
 
