@@ -358,7 +358,8 @@ void bjack::resetUI(int x, int y) {
 
     int options_width = 40;
     string options1 = "H - Hit me      S - Stand";
-    string options2 = "D - Double      P - Split";
+//    string options2 = "D - Double      P - Split";
+    string options2 = "                         ";
 
     //int filler_offset = 6;
 
