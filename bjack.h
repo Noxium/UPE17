@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <unistd.h>
 #include <termios.h>
 
@@ -15,6 +16,7 @@ private:
     void print_simple(string out, int offset, char offset_filler);
     void print_simple(string out, int offset);
     void print_simple(string out);
-    void print_card(int num);
+    void print_card(string num, int cardNum);
+    std::vector<int> cards;
 };
 
