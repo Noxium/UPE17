@@ -6,21 +6,49 @@ using std::cin;
 
 #define CARD_H 5
 #define CARD_W 7
+#define FACTS_X 3
+#define FACTS_Y 19
+
+#define INFO_X 4
+#define INFO_Y 55
+#define NETWINS_Y 63
+#define WINS_Y 72
+#define LOSSES_Y 80
+#define RATIO_Y 89
+#define PUSHES_Y 97
+#define TOTALGAMES_Y 107
 
 void bjack::run(int x, int y) {
+    for(int i = 0; i < y; i++) printf("\n");
+x = x; y = y;
+    string amtMsg = "Please enter your starting amount:";
+    printf("\033[%i;%iH", y/2, x/2 - (int)amtMsg.size()/2);
+    printf("%s", amtMsg.c_str());
+    printf("\033[%i;%iH", y/2+1, x/2-2);
+    printf("$");
+    int amt;
+    std::cin >> amt;
+    money = amt;
+
+    printf("\033[0;0H");
     resetUI(x, y);
     string msg = "Last user input =  ";
     char c;
         printf("%s", msg.c_str());
     int cardCount = 0;
-    while((c=echoEnable()) != 'q') {
+    while((tolower(c=echoEnable())) != 'q') {
         switch(c){
             case 'h': {
-                int num = (rand()*8)+1;
+                int num = (rand() % 8)+1;
+                cards.push_back(num);
                 print_card(std::to_string(num), cardCount);
+                int total = 0;
+                for(unsigned int i = 0; i < cards.size(); i++) {
+                    total += cards[i];
+                }
+                printf("\033[%i;%iH   \b\b\b%i", FACTS_X + 2, FACTS_Y, total);
                 printf("\033[%i;%iH", y+1, (int)msg.size() + 1);
                 cardCount++;
-                cards.push_back(num);
 
                 break;
             } case 'r': {
@@ -84,14 +112,14 @@ void bjack::print_card(std::string num, int cardNum) {
     if(cardNum == 0) offset = 1;
     for(int i = 0; i < CARD_H; i++) {
         printf("\r");
-        printf("\033[%i;%iH", 13+i, offset);
+        printf("\033[%i;%iH", 12+i, offset);
         if(i == 0 || i == 4) {
             printf("+-----+");
         } 
         if(i > 0 && i < 4) {
             printf("|     |");
             if(i == 2) {
-                printf("\033[%i;%iH%c", 13+i, offset+3, num.c_str()[0]);
+                printf("\033[%i;%iH%c", 12+i, offset+3, num.c_str()[0]);
             }
         }
     }
@@ -108,9 +136,10 @@ void bjack::resetUI(int x, int y) {
     LS_offset = LS_offset;
 
     int options_width = 40;
-    string options = "H - Hit me      S - Stand";
+    string options1 = "H - Hit me      S - Stand";
+    string options2 = "D - Double      P - Split";
 
-    int filler_offset = 6;
+    //int filler_offset = 6;
 
     // print
     //printf("\033[0;0H");
@@ -142,7 +171,7 @@ void bjack::resetUI(int x, int y) {
         }
 
         // print cards: bottem -> top
-        if(i == y-1 || i == y-3) {
+        if(i == y-1 || i == y-4) {
             printf("\r");
             for(int i = 0; i < options_width-1; i++) {
                 printf(" ");
@@ -152,27 +181,43 @@ void bjack::resetUI(int x, int y) {
             printf("\r");
             for(int i = 0; i < options_width-1; i++) {
                 printf(" ");
-                if(i == (options_width/2 - (int)options.size()/2)) {
-                    printf("%s", options.c_str());
-                    i += options.size();
+                if(i == (options_width/2 - (int)options1.size()/2)) {
+                    printf("%s", options2.c_str());
+                    i += options1.size();
                 }
             }
             printf("|");
-        } else if(i == y-4) {
+        } else if(i == y-3) {
+            printf("\r");
+            for(int i = 0; i < options_width-1; i++) {
+                printf(" ");
+                if(i == (options_width/2 - (int)options1.size()/2)) {
+                    printf("%s", options1.c_str());
+                    i += options1.size();
+                }
+            }
+            printf("|");
+        } else if(i == y-5) {
             printf("\r");
             for(int i = 0; i < options_width-1; i++) {
                 printf("-");
             }
             printf("+");
-        } else if(i == y - 5 - CARD_H) {
+        } else if(i == y - 10 - CARD_H) {
+            printf("\r");
+            printf("Pot total\t- $%i", pot);
+        } else if(i == y - 11 - CARD_H) {
+            printf("\r");
+            printf("Available money\t- $%i", money);
+        } else if(i == y - 12 - CARD_H) {
             printf("\r");
             int num = 0;
             for(unsigned int i = 0; i < cards.size(); i++) num += cards[i];
             printf("Card total\t- %i", num);
-        } else if(i == y - 6 - CARD_H) {
+        } else if(i == y - 13 - CARD_H) {
             printf("\r");
             printf("Chance to 21\t- 100%%");
-        } else if(i == y - 7 - CARD_H) {
+        } else if(i == y - 14 - CARD_H) {
             printf("\r");
             printf("Chance to bust\t- 100%%");
         }
@@ -189,7 +234,7 @@ void bjack::resetUI(int x, int y) {
 */
 
         // filler: top - bottem
-        if(i == 0) {
+/*        if(i == 0) {
             print_simple(" _____", filler_offset);
         } else if(i == 1) {
             print_simple("|A .  | _____", filler_offset);
@@ -208,7 +253,7 @@ void bjack::resetUI(int x, int y) {
         } else if(i == 8) {
             print_simple("                     |____V|", filler_offset);
         }
-
+*/
         printf("\n");
     }
 }

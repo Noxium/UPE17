@@ -18,5 +18,7 @@ private:
     void print_simple(string out);
     void print_card(string num, int cardNum);
     std::vector<int> cards;
+    int money;
+    int pot;
 };
 
