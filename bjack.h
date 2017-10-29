@@ -17,8 +17,13 @@ private:
     void print_simple(string out, int offset);
     void print_simple(string out);
     void print_card(string num, int cardNum);
+    void print_card_small(std::string num, int cardNum);
     std::vector<int> cards;
+    int total;
     int money;
     int pot;
+
+    int dMoney;
+    int dTotal;
 };
 
